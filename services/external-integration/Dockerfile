@@ -1,6 +1,8 @@
-# Dockerfile for external-integration service
+# External Integration Service Dockerfile
 FROM node:20-alpine
 WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
 COPY . .
-RUN npm install
-CMD ["node", "src/index.js"]
+EXPOSE 3004
+CMD ["npm", "start"]
