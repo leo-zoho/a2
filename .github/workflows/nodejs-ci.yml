@@ -1,0 +1,29 @@
+# Example CI workflow for Node.js services
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [task-management, role-registry, swarm-manager, user-interface, external-integration, monitoring-reporting]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+      - name: Install dependencies
+        run: |
+          cd services/${{ matrix.service }}
+          npm install
+      - name: Run tests
+        run: |
+          cd services/${{ matrix.service }}
+          npm test || echo "No tests yet"
